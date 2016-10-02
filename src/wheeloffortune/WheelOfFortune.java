@@ -112,16 +112,16 @@ public class WheelOfFortune {
    */
   private static Map<Character, Boolean> guessedLetters = new HashMap<>();
 
-  /*
-   * Given a letter, determine if it's in the puzzle
-   */
-  private static int countLetterInPuzzle(char guessedLetter, String puzzle) {
+  private static int checkLetterInPuzzle(char guessedLetter, String puzzle, boolean stopAtOne) {
     int count = 0;
     for (int i = 0; i < puzzle.length(); i++) {
       // Current letter
       char puzzleLetter = puzzle.charAt(i);
       if (guessedLetter == puzzleLetter) {
         count++;
+        if (stopAtOne) {
+          return count;
+        }
       }
     }
     return count;
@@ -130,16 +130,15 @@ public class WheelOfFortune {
   /*
    * Given a letter, determine if it's in the puzzle
    */
+  private static int countLetterInPuzzle(char guessedLetter, String puzzle) {
+    return checkLetterInPuzzle(guessedLetter, puzzle, false);
+  }
+
+  /*
+   * Given a letter, determine if it's in the puzzle
+   */
   private static boolean isLetterInPuzzle(char guessedLetter, String puzzle) {
-    for (int i = 0; i < puzzle.length(); i++) {
-      // Current letter
-      char puzzleLetter = puzzle.charAt(i);
-      if (guessedLetter == puzzleLetter) {
-        return true;
-      }
-    }
-    // If we're here, then the letter was not found
-    return false;
+    return (checkLetterInPuzzle(guessedLetter, puzzle, true) > 0);
   }
 
   /*

@@ -86,7 +86,6 @@ public class WheelOfFortune {
       "", // 5 possibly used in the future
       "", // 6 possibly used in the future
       "", // 7 possibly used in the future
-      "8. Toggle puzzle reveal",
       "9. Test letter input"
   );
   private static final int _quitChoiceNumber = 4;
@@ -363,10 +362,6 @@ public class WheelOfFortune {
             // This letter has now been guessed
             guessedLetters.put(letter, true);
           }
-          break;
-
-        case 8: // Toggle reveal letters
-          revealLetters = !revealLetters;
           break;
 
         case 9: // Test to read in a letter from the keyboard

@@ -297,7 +297,8 @@ public class WheelOfFortune {
           if (wedgeValue.equals("BANKRUPT")) {
             System.out.println("Your money is gone!");
             winnings = 0;
-          } else { if (wedgeValue.startsWith("$")) {
+          } else {
+            if (wedgeValue.startsWith("$")) {
               char letter = ' ';
 
               // Set to false to ensure we get in the loop
@@ -345,9 +346,7 @@ public class WheelOfFortune {
             break;
           }
 
-          
-      
-    case 8: // Toggle reveal letters
+        case 8: // Toggle reveal letters
           revealLetters = !revealLetters;
           break;
 
@@ -361,8 +360,6 @@ public class WheelOfFortune {
   /**
    * @param args the command line arguments
    */
-  
-
   public static void main(String[] args) {
     gameMenu();
   }

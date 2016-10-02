@@ -82,11 +82,7 @@ public class WheelOfFortune {
       "1. Spin the wheel",
       "2. Buy a vowel",
       "3. Solve the puzzle",
-      "4. Quit the game",
-      "", // 5 possibly used in the future
-      "", // 6 possibly used in the future
-      "", // 7 possibly used in the future
-      "9. Test letter input"
+      "4. Quit the game"
   );
   private static final int _quitChoiceNumber = 4;
 
@@ -362,10 +358,6 @@ public class WheelOfFortune {
             // This letter has now been guessed
             guessedLetters.put(letter, true);
           }
-          break;
-
-        case 9: // Test to read in a letter from the keyboard
-          System.out.println("Your letter is: " + inputLetter());
           break;
       }
     }

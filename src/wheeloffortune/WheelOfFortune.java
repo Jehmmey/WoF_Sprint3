@@ -20,6 +20,9 @@ public class WheelOfFortune {
   // Used to get random values for puzzle and wheel
   private static final Random _random = new Random();
 
+  // Winnings for user
+  private static long winnings = 0;
+
   // True if we want to show all letters
   private static boolean revealLetters = false;
 
@@ -208,6 +211,8 @@ public class WheelOfFortune {
       System.out.println("                      =  Wheel Of Fortune  =");
       System.out.println("                      ======================");
       System.out.println("                                            ");
+
+      System.out.println("Winnings: $" + winnings);
 
       System.out.println(maskPuzzle(puzzle, revealLetters));
       System.out.println();

@@ -115,6 +115,21 @@ public class WheelOfFortune {
   /*
    * Given a letter, determine if it's in the puzzle
    */
+  private static int countLetterInPuzzle(char guessedLetter, String puzzle) {
+    int count = 0;
+    for (int i = 0; i < puzzle.length(); i++) {
+      // Current letter
+      char puzzleLetter = puzzle.charAt(i);
+      if (guessedLetter == puzzleLetter) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  /*
+   * Given a letter, determine if it's in the puzzle
+   */
   private static boolean isLetterInPuzzle(char guessedLetter, String puzzle) {
     for (int i = 0; i < puzzle.length(); i++) {
       // Current letter
@@ -323,7 +338,9 @@ public class WheelOfFortune {
                 int wedgeMoney = Integer.parseInt(justDollarAmount);
 
                 // Add to winnings
-                winnings += wedgeMoney;
+                int count = countLetterInPuzzle(letter, puzzle);
+                System.out.println(letter + " appears " + count + " times");
+                winnings += wedgeMoney * count;
               }
             }
             break;

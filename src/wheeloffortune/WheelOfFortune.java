@@ -280,6 +280,9 @@ public class WheelOfFortune {
           wedgeValue = chooseRandomWedgeValue();
           System.out.println("You landed on: " + wedgeValue);
           // If user landed on a dollar-value wedge
+          if (wedgeValue.equals("BANKRUPT")) {
+            System.out.println("Your money is gone!");
+            winnings = 0;
           if (wedgeValue.startsWith("$")) {
             char letter = ' ';
 

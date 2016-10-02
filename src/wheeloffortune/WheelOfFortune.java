@@ -209,6 +209,16 @@ public class WheelOfFortune {
     return letter;
   }
 
+  private static boolean isLetterVowel(char letter) {
+    // Find index of the letter within AEIOU
+    int index = "AEIOU".indexOf(letter);
+
+    // If found, then the index will be 0 or greater
+    boolean isVowel = (index != -1);
+
+    return isVowel;
+  }
+
   // Display the game menu, and handle the choices made
   private static void gameMenu() {
     // Choice from the menu
@@ -274,10 +284,10 @@ public class WheelOfFortune {
             char letter = ' ';
 
             // Set to false to ensure we get in the loop
-            boolean guessedNewLetter = false;
+            boolean guessedValidLetter = false;
 
             // Keep asking letter until user enters one that has not been guessed already
-            while (!guessedNewLetter) {
+            while (!guessedValidLetter) {
               // Letter input from the keyboard
               letter = inputLetter();
               System.out.println("Your letter is: " + letter);
@@ -288,8 +298,14 @@ public class WheelOfFortune {
                 System.out.println("You already guessed " + letter + "!");
                 System.out.println("Guess again");
               } else {
-                // If the letter has NOT been guessed, this will allow us to leave the loop
-                guessedNewLetter = true;
+                if (isLetterVowel(letter)) {
+                  // Output an error
+                  System.out.println("That is a vowel!");
+                  System.out.println("Guess again");
+                } else {
+                  // If the letter has NOT been guessed, this will allow us to leave the loop
+                  guessedValidLetter = true;
+                }
               }
             }
             // This letter has now been guessed

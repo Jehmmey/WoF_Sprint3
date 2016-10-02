@@ -23,13 +23,16 @@ public class WheelOfFortune {
   // Winnings for user
   private static long winnings = 0;
 
+  // What wedge the player landed on
+  private static String wedgeValue = "";
+
   // True if we want to show all letters
   private static boolean revealLetters = false;
 
   /*
-  * These are the wedges that are part of the wheel.
-  * There are 24.  Some values can appear more than once
-  */
+   * These are the wedges that are part of the wheel.
+   * There are 24.  Some values can appear more than once
+   */
   private static final List<String> _wedges = Arrays.asList(
       /* 01 */"$5000",
       /* 02 */ "$600",
@@ -58,9 +61,9 @@ public class WheelOfFortune {
   );
 
   /*
-  * The number of wedges will not change throughout the game
-  * We can cache the value so we're not calling .size() over and over
-  */
+   * The number of wedges will not change throughout the game
+   * We can cache the value so we're not calling .size() over and over
+   */
   private static final int _wedgeCount = _wedges.size();
 
   private static String chooseRandomWedgeValue() {
@@ -93,25 +96,40 @@ public class WheelOfFortune {
   );
 
   /*
-  * The number of puzzles will not change throughout the game
-  * We can cache the value so we're not calling .size() over and over
-  */
+   * The number of puzzles will not change throughout the game
+   * We can cache the value so we're not calling .size() over and over
+   */
   private static final int _puzzlesCount = _puzzles.size();
 
   /*
-  * We will store the guessed letters in a hash map.
-  * The "key" will be the character that was guessed
-  * The "value" will be true/false
-  *
-  * Actually, the "value" aspect of this is not relevant.
-  * Just the fact that a letter appears in the map as a key, is enough to imply
-  * it was guessed.
-  */
+   * We will store the guessed letters in a hash map.
+   * The "key" will be the character that was guessed
+   * The "value" will be true/false
+   *
+   * Actually, the "value" aspect of this is not relevant.
+   * Just the fact that a letter appears in the map as a key, is enough to imply
+   * it was guessed.
+   */
   private static Map<Character, Boolean> guessedLetters = new HashMap<>();
 
   /*
-  * Given a puzzle, return a masked version, with hidden letters
-  */
+   * Given a letter, determine if it's in the puzzle
+   */
+  private static boolean isLetterInPuzzle(char guessedLetter, String puzzle) {
+    for (int i = 0; i < puzzle.length(); i++) {
+      // Current letter
+      char puzzleLetter = puzzle.charAt(i);
+      if (guessedLetter == puzzleLetter) {
+        return true;
+      }
+    }
+    // If we're here, then the letter was not found
+    return false;
+  }
+
+  /*
+   * Given a puzzle, return a masked version, with hidden letters
+   */
   private static String maskPuzzle(String puzzle, boolean revealLetters) {
     // Use a string builder, since Java strings are immutable
     StringBuilder maskedPuzzle = new StringBuilder();
@@ -122,19 +140,19 @@ public class WheelOfFortune {
       char c = puzzle.charAt(i);
 
       /*
-      * Either we're revealing all letters, or we've already guessed the
-      * letter
-      */
+       * Either we're revealing all letters, or we've already guessed the
+       * letter
+       */
       boolean isLetterGuessed = revealLetters || guessedLetters.containsKey(c);
 
       /*
-      * If the letter is not blank (we don't mask blanks), and the letter
-      * has not been guessed, then we will mask it.
-      */
-      if (c != ' ' && !isLetterGuessed){
+       * If the letter is not blank (we don't mask blanks), and the letter
+       * has not been guessed, then we will mask it.
+       */
+      if (c != ' ' && !isLetterGuessed) {
         c = '_';
       }
-      
+
       // Put one space after each character (even a space) in the puzzle
       maskedPuzzle.append(c + " ");
     }
@@ -249,10 +267,46 @@ public class WheelOfFortune {
           break;
 
         case 1: // Spin the wheel
-          System.out.println("You landed on: " + chooseRandomWedgeValue());
-          char letter = inputLetter();
-          System.out.println("Your letter is: " + letter);
-          guessedLetters.put(letter, true);
+          wedgeValue = chooseRandomWedgeValue();
+          System.out.println("You landed on: " + wedgeValue);
+          // If user landed on a dollar-value wedge
+          if (wedgeValue.startsWith("$")) {
+            char letter = ' ';
+
+            // Set to false to ensure we get in the loop
+            boolean guessedNewLetter = false;
+
+            // Keep asking letter until user enters one that has not been guessed already
+            while (!guessedNewLetter) {
+              // Letter input from the keyboard
+              letter = inputLetter();
+              System.out.println("Your letter is: " + letter);
+
+              // If the letter has already been guessed
+              if (guessedLetters.containsKey(letter)) {
+                // Output an error
+                System.out.println("You already guessed " + letter + "!");
+                System.out.println("Guess again");
+              } else {
+                // If the letter has NOT been guessed, this will allow us to leave the loop
+                guessedNewLetter = true;
+              }
+            }
+            // This letter has now been guessed
+            guessedLetters.put(letter, true);
+            if (isLetterInPuzzle(letter, puzzle)) {
+              System.out.println("Correct!");
+
+              // Get rid of the leading dollar sign
+              String justDollarAmount = wedgeValue.substring(1);
+
+              // Convert to integer
+              int wedgeMoney = Integer.parseInt(justDollarAmount);
+
+              // Add to winnings
+              winnings += wedgeMoney;
+            }
+          }
           break;
 
         case 8: // Toggle reveal letters

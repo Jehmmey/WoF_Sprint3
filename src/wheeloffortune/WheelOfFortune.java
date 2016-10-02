@@ -214,8 +214,12 @@ public class WheelOfFortune {
         if (!Character.isLetter(letter)) {
           System.out.println("That is not a letter");
         } else {
-          // Will exit the loop
-          finished = true;
+          if (guessedLetters.containsKey(letter)) {
+            System.out.println("You already guessed that letter!");
+          } else {
+            // Will exit the loop
+            finished = true;
+          }
         }
       }
     }
@@ -306,24 +310,17 @@ public class WheelOfFortune {
 
               // Keep asking letter until user enters one that has not been guessed already
               while (!guessedValidLetter) {
-                // Letter input from the keyboard
+                // Get not-already-guessed letter from the keyboard
                 letter = inputLetter();
                 System.out.println("Your letter is: " + letter);
 
-                // If the letter has already been guessed
-                if (guessedLetters.containsKey(letter)) {
+                if (isLetterVowel(letter)) {
                   // Output an error
-                  System.out.println("You already guessed " + letter + "!");
+                  System.out.println("That is a vowel!");
                   System.out.println("Guess again");
                 } else {
-                  if (isLetterVowel(letter)) {
-                    // Output an error
-                    System.out.println("That is a vowel!");
-                    System.out.println("Guess again");
-                  } else {
-                    // If the letter has NOT been guessed, this will allow us to leave the loop
-                    guessedValidLetter = true;
-                  }
+                  // If the letter has NOT been guessed, this will allow us to leave the loop
+                  guessedValidLetter = true;
                 }
               }
               // This letter has now been guessed

@@ -283,52 +283,55 @@ public class WheelOfFortune {
           if (wedgeValue.equals("BANKRUPT")) {
             System.out.println("Your money is gone!");
             winnings = 0;
-          if (wedgeValue.startsWith("$")) {
-            char letter = ' ';
+          } else { if (wedgeValue.startsWith("$")) {
+              char letter = ' ';
 
-            // Set to false to ensure we get in the loop
-            boolean guessedValidLetter = false;
+              // Set to false to ensure we get in the loop
+              boolean guessedValidLetter = false;
 
-            // Keep asking letter until user enters one that has not been guessed already
-            while (!guessedValidLetter) {
-              // Letter input from the keyboard
-              letter = inputLetter();
-              System.out.println("Your letter is: " + letter);
+              // Keep asking letter until user enters one that has not been guessed already
+              while (!guessedValidLetter) {
+                // Letter input from the keyboard
+                letter = inputLetter();
+                System.out.println("Your letter is: " + letter);
 
-              // If the letter has already been guessed
-              if (guessedLetters.containsKey(letter)) {
-                // Output an error
-                System.out.println("You already guessed " + letter + "!");
-                System.out.println("Guess again");
-              } else {
-                if (isLetterVowel(letter)) {
+                // If the letter has already been guessed
+                if (guessedLetters.containsKey(letter)) {
                   // Output an error
-                  System.out.println("That is a vowel!");
+                  System.out.println("You already guessed " + letter + "!");
                   System.out.println("Guess again");
                 } else {
-                  // If the letter has NOT been guessed, this will allow us to leave the loop
-                  guessedValidLetter = true;
+                  if (isLetterVowel(letter)) {
+                    // Output an error
+                    System.out.println("That is a vowel!");
+                    System.out.println("Guess again");
+                  } else {
+                    // If the letter has NOT been guessed, this will allow us to leave the loop
+                    guessedValidLetter = true;
+                  }
                 }
               }
+              // This letter has now been guessed
+              guessedLetters.put(letter, true);
+              if (isLetterInPuzzle(letter, puzzle)) {
+                System.out.println("Correct!");
+
+                // Get rid of the leading dollar sign
+                String justDollarAmount = wedgeValue.substring(1);
+
+                // Convert to integer
+                int wedgeMoney = Integer.parseInt(justDollarAmount);
+
+                // Add to winnings
+                winnings += wedgeMoney;
+              }
             }
-            // This letter has now been guessed
-            guessedLetters.put(letter, true);
-            if (isLetterInPuzzle(letter, puzzle)) {
-              System.out.println("Correct!");
-
-              // Get rid of the leading dollar sign
-              String justDollarAmount = wedgeValue.substring(1);
-
-              // Convert to integer
-              int wedgeMoney = Integer.parseInt(justDollarAmount);
-
-              // Add to winnings
-              winnings += wedgeMoney;
-            }
+            break;
           }
-          break;
 
-        case 8: // Toggle reveal letters
+          
+      
+    case 8: // Toggle reveal letters
           revealLetters = !revealLetters;
           break;
 
@@ -342,6 +345,8 @@ public class WheelOfFortune {
   /**
    * @param args the command line arguments
    */
+  
+
   public static void main(String[] args) {
     gameMenu();
   }

@@ -66,6 +66,9 @@ public class WheelOfFortune {
    */
   private static final int _wedgeCount = _wedges.size();
 
+  // This is how much a vowel costs
+  private static final int _vowelCost = 250;
+
   private static String chooseRandomWedgeValue() {
     // Choose a random index
     int randomWedgeIndex = _random.nextInt(_wedgeCount);
@@ -342,6 +345,25 @@ public class WheelOfFortune {
             }
             break;
           }
+
+        case 2: // Buy a vowel
+          if (winnings < _vowelCost) {
+            System.out.println("You need at least $" + _vowelCost);
+          } else {
+            winnings -= _vowelCost;
+            boolean isVowel = false;
+            char letter = ' ';
+            while (!isVowel) {
+              letter = inputLetter();
+              isVowel = isLetterVowel(letter);
+              if (!isVowel) {
+                System.out.println("That is not a vowel.");
+              }
+            }
+            // This letter has now been guessed
+            guessedLetters.put(letter, true);
+          }
+          break;
 
         case 8: // Toggle reveal letters
           revealLetters = !revealLetters;

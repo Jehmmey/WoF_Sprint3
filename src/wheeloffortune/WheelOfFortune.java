@@ -90,7 +90,8 @@ public class WheelOfFortune {
   private static final List<String> _puzzles = Arrays.asList(
       "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG",
       "PENN STATE ABINGTON",
-      "INFORMATION SCIENCES AND TECHNOLOGY"
+      "INFORMATION SCIENCES AND TECHNOLOGY",
+      "CAT"
   );
 
   /*
@@ -235,6 +236,35 @@ public class WheelOfFortune {
     return isVowel;
   }
 
+  // Determine if puzzle has been solved
+  private static boolean isPuzzleSolved(String puzzle) {
+    // For each letter in the puzzle
+    for (int i = 0; i < puzzle.length(); i++) {
+      char puzzleLetter = puzzle.charAt(i);
+      // If this letter is not in the puzzle, then puzzle is not solved
+      if (!guessedLetters.containsKey(puzzleLetter)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // Allow user to solve the puzzle
+  private static boolean solvePuzzle(String puzzle) {
+    System.out.println("\nIF YOU GET ONE LETTER WRONG, YOU LOSE!!\n");
+
+    while (!isPuzzleSolved(puzzle)) {
+      System.out.println(maskPuzzle(puzzle, false));
+      char letter = inputLetter(true);
+      if (!isLetterInPuzzle(letter, puzzle)) {
+        return false;
+      }
+      guessedLetters.put(letter, true);
+    }
+
+    return true;
+  }
+
   // Display the game menu, and handle the choices made
   private static void gameMenu() {
     // Choice from the menu
@@ -359,6 +389,17 @@ public class WheelOfFortune {
             guessedLetters.put(letter, true);
           }
           break;
+
+        case 3: // Solve the puzzle
+          if (solvePuzzle(puzzle)) {
+            System.out.println("You just won $" + winnings + "!!");
+          } else {
+            System.out.println("YOU GET NOTHING!");
+            System.out.println("YOU LOSE!");
+            System.out.println("GOOD DAY, SIR!");
+            winnings = 0;
+          }
+          quit = true;
       }
     }
   }
